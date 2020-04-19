@@ -1,0 +1,20 @@
+{
+    "server": {
+        "ipaddr": "localhost",
+        "port": "8080"
+    },
+    "database": {
+        "ipaddr" : "localhost",
+        "name": "kluck",
+        "port": "5432",
+        "user": "USER",
+        "password": "YOUR PASSWORD",
+        "sslmode": "disable"
+    },
+    "auth": {
+        "google_client_ID" : "YOUR APP'S GOOGLE CLIENT ID",
+        "google_client_secret" : "YOUR APP'S GOOGLE CLIENT SECRET",
+        "yahoo_client_ID" : "YOUR APP'S YAHOO CLIENT ID",
+        "yahoo_client_secret" : "YOUR APP'S YAHOO CLIENT SECRET"
+    }
+}

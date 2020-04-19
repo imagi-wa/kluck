@@ -1,0 +1,25 @@
+{{ define "content" }}
+
+<div class="container justfy-content-center" style="padding-bottom: 8rem;">
+    {{ range .DirectMessages }}
+        <div class="media bg-secondary mb-4 p-4">
+            <img class="mr-3 img-thumbnail" src="./../web/images/users\default.png" width="50" height="50">
+            <div class="media-body">
+              <h5 class="mt-0 border-bottom">{{ .User }}<small class="text-align-right ml-3">{{ .CreatedTime }}</small></h5>
+              <p style="white-space: pre-wrap;">{{ .Sentence }}</p>
+            </div>
+        </div>
+    {{ else }}
+        {{ .Alert }}
+    {{ end }}
+    <div class="col-xl-9 offset-xl-3 fixed-bottom bg-primary p-3">
+        <form action="/{{ .CurrentGroupInfo.GroupID }}/{{ .ConversationUserCode }}/new" method="POST" class="input-group mb-0">
+            <textarea class="form-control" name="sentence" rows="3" placeholder="Message..."  style="min-height: 5rem;max-height: 50rem;" required></textarea>
+            <div class="input-group-append">
+                <button class="btn btn-outline-success" type="submit"><i data-feather="send"></i>Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{ end }}

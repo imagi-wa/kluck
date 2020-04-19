@@ -1,0 +1,29 @@
+{{ define "content" }}
+
+<div class="container justify-content-center">
+    {{ range .Groups }}
+    <div class="media bg-secondary">
+        <a href="/{{ .GroupID }}" class="mr-3">
+            <img src=".\..\..\web\images\group.png" class="img" style="height: 5rem; width: 5rem;">
+        </a>
+        <div class="media-body">
+            <a class="text-decoration-none text-white" href="/{{ .GroupID }}">
+                <h5 class="mt-0">{{ .GroupName }}</h5>
+            </a>
+            <div class="row">
+                <div class="col-4">
+                    started at <i data-feather="clock"></i>{{ .CreatedTime }}
+                </div>
+                <div class="col-2 p-0">
+                    <i data-feather="users"></i>{{ .MembersNumber }}
+                    <i data-feather="layout"></i>{{ .ChannelsNumber }}
+                </div>
+            </div>
+        </div><!-- /.media-body -->
+      </div><!-- /.media -->
+    {{ else }}
+    not found...
+    {{ end }}
+</div>
+
+{{ end }}

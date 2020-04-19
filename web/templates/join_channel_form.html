@@ -1,0 +1,26 @@
+{{ define "content" }}
+
+{{ range .Channels }}
+<div class="container justify-content-center">
+    <form action="/{{ .GroupID }}/{{ .ChannelID }}/join" method="POST" class="input-group justify-content-center">
+            <button class="btn btn-outline-success" type="submit"><i data-feather="send"></i>Join</button>
+    </form>
+        <div class="card bg-secondary mb-4">
+            <h4 class="card-header">
+                {{ .ChannelName }}
+            </h4>
+            <div class="card-body">
+                <div class="mb-2 pb-2 border-bottom">
+                    <img class="mr-3 img-thumbnail" src="./../../web/images/users\default.png" width="50" height="50">
+                    {{ .User }}
+                </div>
+                {{ .ChannelTopic }}
+            </div>
+            <div class="card-footer">
+                Started at {{ .CreatedTime }}
+            </div>
+        </div>
+</div>
+{{ end }}
+
+{{ end }}

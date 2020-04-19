@@ -1,0 +1,42 @@
+{{ define "top-nav" }}
+
+<div class="col-3 d-none d-xl-block p-0 h-100">
+    <div class="media h-100">
+        <a href="#" class="mr-1">
+          <img src=".\..\..\web\images\users\{{ .UserInfo.UserImg }}" class="img" style="height: 5rem; width: 5rem;">
+        </a>
+        <div class="media-body text-white m-0 py-auto h-100">
+            <div class="container h-100 p-0">
+                <div class="row w-100 h-50 m-0">
+                    <div class="col p-0 font-weight-bold align-middle">
+                    <a class="text-white text-decoration-none" href="/{{ .CurrentGroupInfo.GroupID }}"><h3>{{ .CurrentGroupInfo.GroupName }}</h3></a>
+                    </div>
+                </div>
+                <div class="row w-100 h-50 m-0">
+                    <i data-feather="at-sign"></i>{{ .UserInfo.UserName }}
+                </div>
+            </div>
+        </div><!-- /.media-body -->
+    </div><!-- /.media -->
+</div>
+<nav class="col-xl-9 navbar navbar-dark navbar-expand-xl justify-content-between h-100">
+    <button type="button" class="navbar-toggler mx-3" data-toggle="modal" data-target="#sideNavModal">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand h1" href="/">
+        <img src=".\..\..\web\images\kluk.png" width="50" height="50">
+        Kluck
+    </a>
+    <div class="dropdown mx-3">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i data-feather="settings"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="/preferences"><i data-feather="tool" class="mr-1"></i>Preferences</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/signout"><i data-feather="log-out" class="mr-1"></i>Sign out</a>
+        </div><!-- /.dropdown-menu -->
+    </div><!-- /.dropdown -->
+</nav>
+
+{{ end }}

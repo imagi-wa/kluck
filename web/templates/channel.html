@@ -1,0 +1,42 @@
+{{ define "content" }}
+
+<div class="container justfy-content-center" style="padding-bottom: 8rem;">
+    {{ range .Channels }}
+        <div class="card bg-secondary mb-4">
+            <h4 class="card-header">
+                <i data-feather="{{ if eq .TypeID 1 }}hash{{ end }}{{ if eq .TypeID 2 }}lock{{ end }}{{ if eq .TypeID 3 }}shield{{ end }}" class="mr-1"></i>
+                {{ .ChannelName }}
+            </h4>
+            <div class="card-body">
+                <div class="mb-2 pb-2 font-weight-bold">
+                    <h5 class="pb-3 border-bottom font-weight-bold"><img class="mr-3 img-thumbnail" src=".\..\..\web\images\users\{{ .UserImg }}" width="50" height="50">{{ .UserName }}<small class="ml-3">[{{ .UserCode }}]</small></h5>
+                </div>
+                {{ .ChannelTopic }}
+            </div>
+            <div class="card-footer">
+                Started at {{ .CreatedTime }}
+            </div>
+        </div>
+        <div class="col-xl-9 offset-xl-3 fixed-bottom bg-primary p-3">
+            <form action="/{{ .GroupID }}/{{ .ChannelID }}/new" method="POST" class="input-group mb-0">
+                <textarea class="form-control" name="sentence" rows="3" placeholder="Message..."  style="min-height: 5rem;max-height: 50rem;" required></textarea>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-success" type="submit"><i data-feather="send"></i>Send</button>
+                </div>
+            </form>
+        </div>
+    {{ end }}
+    {{ range .Messages }}
+        <div class="media bg-secondary mb-4 p-4">
+            <img class="mr-3 img-thumbnail" src=".\..\..\web\images\users\{{ .UserImg }}" width="50" height="50">
+            <div class="media-body">
+              <h5 class="mt-0 border-bottom font-weight-bold">{{ .UserName }}<small class="ml-3">[{{ .UserCode }}]</small><small class="float-right">{{ .CreatedTime }}</small></h5>
+              <p style="white-space: pre-wrap;">{{ .Sentence }}</p>
+            </div>
+        </div>
+    {{ else }}
+        no messages...
+    {{ end }}
+</div>
+
+{{ end }}

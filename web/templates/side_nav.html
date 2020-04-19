@@ -1,0 +1,46 @@
+{{ define "side-nav" }}
+
+<div class="container h-100 p-0">
+    <div class="row w-100 h-100 m-0">
+        <div class="col-2 p-0 h-100 border overflow-auto">
+            <div class="list-group rounded-0">
+                {{ $userID := .UserInfo.UserID }}
+                {{ $groupID := .CurrentGroupInfo.GroupID }}
+                {{ range .GroupsInfo }}
+                <a href="/{{ .GroupID }}" class="lit-group-item list-group-item-action"><img src=".\..\..\web\images\groups\default.png" class="img-{{ if eq .GroupID $groupID}}thumbnail{{ else }}fluid{{ end }}"></a>
+                {{ end }}
+                <button type="button" class="list-group-item list-group-item-action bg-secondary" data-toggle="modal" data-target="#GroupsModal">
+                    <img src=".\..\..\web\images\new_group.png" class="img-fluid">
+                </button>
+            </div>
+        </div>
+        <div class="col-10 p-0 h-100 border overflow-auto">
+            <div class="list-group rounded-0">
+                <button type="button" class="list-group-item list-group-item-action list-group-item-primary text-center font-weight-bold active p-0" data-toggle="modal" data-target="#channelsModal">
+                    <i data-feather="layout" class="mr-1"></i>CHANNELS
+                </button>
+                {{ range .ChannelsInfo }}
+                <a href="/{{ .GroupID }}/{{ .ChannelID }}" class="list-group-item list-group-item-action list-group-item-dark p-0">
+                    <i data-feather="{{ if eq .TypeID 1 }}hash{{ end }}{{ if eq .TypeID 2 }}lock{{ end }}{{ if eq .TypeID 3 }}shield{{ end }}" class="mx-1"></i>
+                    {{ .NameSnippet }}
+                    {{ $y := .UnreadMessagesNumber $userID }}
+                    {{ if ne $y 0 }}
+                    <span class="badge badge-danger">{{ $y }}</span><span class="sr-only">Unread Messages</span>
+                    {{ end }}
+                {{ end }}
+                </a>
+                <button type="button" class="list-group-item list-group-item-action list-group-item-primary text-center font-weight-bold active p-0" data-toggle="modal" data-target="#directMessagesModal">
+                    <i data-feather="message-square" class="mr-1"></i>DIRECT MESSAGES
+                </button>
+                {{ $userCode := .UserInfo.UserCode }}
+                {{ range .DirectMessagesInfo }}
+                    {{ if ne $userCode .UserCode }}
+                    <a href="/{{ $groupID }}/{{ .UserCode }}" class="list-group-item list-group-item-action list-group-item-dark p-0"><i data-feather="at-sign" class="mx-1"></i>{{ .UserName }}</a>
+                    {{ end }}
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ end }}

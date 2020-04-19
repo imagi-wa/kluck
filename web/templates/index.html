@@ -1,0 +1,35 @@
+{{ define "content" }}
+
+<div class="container justify-content-center p-0">
+    {{ with .Alert }}
+    <div class="alert alert-danger">
+        {{ . }}
+    </div>
+    {{ end }}
+    {{ range .Channels }}
+        <div class="card bg-secondary mb-4">
+            <h4 class="card-header">
+                <i data-feather="{{ if eq .TypeID 1 }}hash{{ end }}{{ if eq .TypeID 2 }}lock{{ end }}{{ if eq .TypeID 3 }}shield{{ end }}" class="mr-1"></i><a class="text-white" href="/{{ .GroupID }}/{{ .ChannelID }}">{{ .NameSnippet }}</a>
+            </h4>
+            <div class="card-body">
+                {{ .TopicSnippet }}
+            </div>
+            <div class="card-footer pb-0">
+                <div class="row">
+                    <div class="col-6 p-0">
+                        <h5 class="font-weight-bold"><img class="mr-3 img-thumbnail" src=".\..\..\web\images\users\{{ .UserImg }}" width="50" height="50">{{ .UserName }}<small class="ml-3">[{{ .UserCode }}]</small></h5>
+                    </div>
+                    <div class="col-4">
+                        <i data-feather="clock"></i>{{ .UpdatedTime }}
+                    </div>
+                    <div class="col-2 p-0">
+                        <i data-feather="users"></i>{{ .MembersNumber }}
+                        <i data-feather="message-square"></i>{{ .MessagesNumber }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{ end }}
+</div>
+
+{{ end }}

@@ -1,0 +1,261 @@
+{{ define "layout" }}
+
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+        <link rel="icon" href="./../web/images/icons/kluck_favicon.ico" type="vnd.microsoft.icon">
+
+        <title>Kluck - {{ .CurrentGroupInfo.GroupName }}</title>
+    </head>
+    <body>
+        <div class="container-fluid text-white">
+            <header class="row fixed-top bg-primary mx-0" style="height: 5rem;">
+                {{ template "top-nav" . }}
+            </header>
+            <div class="row vh-100" style="padding-top: 5rem;">
+                <div class="col-3 px-0 d-none d-xl-block bg-secondary h-100" id="sideNav">
+                    {{ template "side-nav" . }}
+                </div>
+                <main class="col bg-dark h-100 pt-3 overflow-auto">
+                    {{ template "content" . }}
+                </main>
+            </div>
+        </div>
+        <!-- Modals -->
+        <!-- Side-navigathion -->
+        <div class="modal fade" id="sideNavModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-xl ml-0 mt-0" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary p-0" style="height: 5rem;">
+                        <div class="media h-100">
+                            <a href="#" class="mr-1">
+                              <img src=".\..\..\web\images\users\default.png" class="img" style="height: 5rem; width: 5rem;">
+                            </a>
+                            <div class="media-body text-white m-0 py-auto">
+                                <div class="container h-100 p-0">
+                                    <div class="row w-100 h-50 m-0">
+                                        <div class="col p-0 font-weight-bold align-middle">
+                                            {{ .CurrentGroupInfo.GroupName }}
+                                        </div>
+                                    </div>
+                                    <div class="row w-100 h-50 m-0">
+                                        <i data-feather="at-sign"></i>{{ .UserInfo.UserName }}
+                                    </div>
+                                </div>
+                            </div><!-- /.media-body -->
+                        </div><!-- /.media -->
+                    </div><!-- /.modal-header -->
+                    <div class="modal-body p-0">
+                        <div class="container h-100 p-0">
+                            <div class="row w-100 h-100 m-0">
+                                <div class="col-2 p-0 h-100 border overflow-auto">
+                                    <div class="list-group rounded-0">
+                                        {{ $userID := .UserInfo.UserID }}
+                                        {{ $groupID := .CurrentGroupInfo.GroupID }}
+                                        {{ range .GroupsInfo }}
+                                        <a href="/{{ .GroupID }}" class="lit-group-item list-group-item-action"><img src=".\..\..\web\images\group.png" class="img-{{ if eq .GroupID $groupID}}thumbnail{{ else }}fluid{{ end }}"></a>
+                                        {{ end }}
+                                        <button type="button" class="list-group-item list-group-item-action bg-secondary" data-toggle="modal" data-target="#GroupsModal">
+                                            <img src=".\..\..\web\images\new_group.png" class="img-fluid">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-10 p-0 h-100 border overflow-auto">
+                                    <div class="list-group rounded-0">
+                                        <button type="button" class="list-group-item list-group-item-action list-group-item-primary text-center font-weight-bold active p-0" data-toggle="modal" data-target="#channelsModal">
+                                            <i data-feather="layout" class="mr-1"></i>CHANNELS
+                                        </button>
+                                        {{ range .ChannelsInfo }}
+                                        <a href="/{{ .GroupID }}/{{ .ChannelID }}" class="list-group-item list-group-item-action list-group-item-dark p-0">
+                                            <i data-feather="{{ if eq .TypeID 1 }}eye{{ end }}{{ if eq .TypeID 2 }}lock{{ end }}{{ if eq .TypeID 3 }}eye-off{{ end }}" class="mr-1"></i>
+                                            {{ .NameSnippet }}
+                                            {{ $y := .UnreadMessagesNumber $userID }}
+                                            {{ if ne $y 0 }}
+                                            <span class="badge badge-danger">{{ $y }}</span><span class="sr-only">Unread Messages</span>
+                                            {{ end }}
+                                        {{ end }}
+                                        </a>
+                                        <button type="button" class="list-group-item list-group-item-action list-group-item-primary text-center font-weight-bold active p-0" data-toggle="modal" data-target="#directMessagesModal">
+                                            <i data-feather="message-square" class="mr-1"></i>DIRECT MESSAGES
+                                        </button>
+                                        {{ range .DirectMessagesInfo }}
+                                        <a href="/{{ $groupID }}/{{ .UserCode }}" class="list-group-item list-group-item-action list-group-item-dark p-0"><i data-feather="at-sign" class="mr-1"></i>{{ .UserName }}</a>
+                                        {{ end }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-body -->
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="channelsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form action="/{{ .CurrentGroupInfo.GroupID }}/search/channel" method="GET" class="input-group justify-content-center">
+                            <div class="form-group w-75">
+                                <input type="text" class="form-control" placeholder="Search channels" name="keyword" required>
+                            </div>
+                            <div class="form-group input-group-append input-group-btn">
+                                <button class="btn btn-outline-primary" type="submit"><i data-feather="search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-body">
+                        <h1 class="row justify-content-center">Start a channel</h1>
+                        <form action="/{{ .CurrentGroupInfo.GroupID }}/new" method="POST" class="p-4">
+                            <div class="form-group btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="type" value="1" checked><i data-feather="hash" class="mr-1"></i>Public
+                                </label>
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="type" value="2"><i data-feather="lock" class="mr-1"></i>Private
+                                </label>
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="type" value="3"><i data-feather="shield" class="mr-1"></i>Secret
+                                </label>
+                                <i data-feather="help-circle"></i>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label for="name" class="col-12 col-form-label">Name</label>
+                                <input type="text" class="col form-control" name="name" required>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label for="topic" class="col-12 col-form-label">Topic</label>
+                                <textarea class="col form-control" name="topic" rows="8" required></textarea>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-outline-primary d-block mx-auto">Start</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div class="modal fade" id="directMessagesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form action="/{{ .CurrentGroupInfo.GroupID }}/search" method="GET" class="input-group mb-0">
+                            <input type="text" class="form-control" placeholder="Find or start direct messages" name="keyword" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="submit"><i data-feather="search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-body">
+                        <p>Group members</p>
+                        {{ $groupID := .CurrentGroupInfo.GroupID }}
+                        <div class="list-group">
+                            {{ $userCode := .UserInfo.UserCode}}
+                            {{ range .CurrentGroupMembers }}
+                                {{ if ne $userCode .UserCode }}
+                                <a href="/{{ $groupID }}/{{ .UserCode }}" class="list-group-item list-group-item-action"><h5 class="font-weight-bold"><img class="mr-3 img-thumbnail" src="./../web/images/users/default.png" width="50" height="50">{{ .UserName }}<small class="ml-3">[{{ .UserCode }}]</small></h5></a>
+                                {{ end }}
+                            {{ end }}
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div class="modal fade" id="GroupsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form action="/{{ .CurrentGroupInfo.GroupID }}/search/group" method="GET" class="input-group mb-0">
+                            <input type="text" class="form-control" placeholder="Find groups" name="keyword" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-primary" type="submit"><i data-feather="search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-body">
+                        <h1 class="row justify-content-center">Create a group</h1>
+                        <form action="/new" method="POST" class="p-4">
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="type" value="1" checked><i data-feather="hash" class="mr-1"></i>Public
+                                </label>
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="type" value="2"><i data-feather="lock" class="mr-1"></i>Private
+                                </label>
+                                <label class="btn btn-outline-primary">
+                                    <input type="radio" name="type" value="3"><i data-feather="shield" class="mr-1"></i>Secret
+                                </label>
+                                <i data-feather="help-circle"></i>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <label for="name" class="col-12 col-form-label">Name</label>
+                                <input type="text" class="col form-control" name="name" required>
+                            </div>
+                            <div class="form-group row justify-content-center">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-outline-primary d-block mx-auto">Create</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <!-- Feathericon -->
+        <script src="https://unpkg.com/feather-icons">feather.replace()</script>
+        <script>
+            feather.replace()
+            $('[data-toggle="tooltip"]').tooltip({trigger: 'click'})
+        </script>
+        <!-- code-prettify -->
+        <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+
+        <!-- scripts -->
+        <script>
+        $(function(){
+        $('#upload_img').change(function(e){
+            var file = e.target.files[0];
+            var reader = new FileReader();
+            if(file.type.indexOf("image") < 0){
+            alert("Choose image file.");
+            return false;
+            }
+            reader.onload = (function(file){
+            return function(e){
+                $("#preview_img").attr("src", e.target.result);
+                $("#preview_img").attr("title", file.name);
+            };
+            })(file);
+            reader.readAsDataURL(file);
+        });
+        });
+        $('.custom-file-input').on('change',function(){
+            $(this).next('.custom-file-label').html($(this)[0].files[0].name);
+        });
+        function CheckPassword(confirm) {
+            var input1 = password.value;
+            var input2 = confirm.value;
+            if (input1 != input2) {
+                confirm.setCustomValidity("The password confirmation does not match.");
+            } else {
+                confirm.setCustomValidity("");
+            }
+        }
+        </script>
+    </body>
+</html>
+
+{{ end }}

@@ -1,0 +1,93 @@
+html, body {
+    height: 100%;
+}
+
+#page {
+    margin: 0;
+    height: 100%;
+    min-height: 100%;
+    padding: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+header {
+    background: linear-gradient(#373737, #000000);
+    color: #FFFFFF;
+    display: block;
+    margin: 0;
+    height: 80px;
+    padding: 10px 10px 10px;
+}
+
+#container {
+    display: flex;
+    margin: 0;
+    height: 100%;
+    min-height: 100%;
+}
+
+#container #side-navi {
+    background: linear-gradient(#dbdbdb, #555555);
+    border-right: 1px solid #000000;
+    min-width: 250px;
+    height: 100%;
+    min-height: 100%;
+    padding: 10px;
+}
+
+#container #contents {
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+}
+
+header img {
+    display: inline-block;
+    height: 80px;
+    width: 80px;
+    left: 10;
+    top: 10;
+}
+
+/*
+    signin content.
+*/
+#auth-wrapper {
+    margin: 0 auto;
+    width: 500px;
+}
+
+#auth-wrapper ul {
+    margin: 0;
+    border: inset;
+    border-width: 10px;
+    border-color: crimson;
+    list-style: none;
+    padding: 10px;
+}
+
+#signin-form {
+    text-align: center;
+}
+
+.top-navi-style {
+    height: 100%;
+    min-height: 100%;
+    top: 0;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#top-navi-wrapper {
+    height: 100%;
+    min-height: 100%;
+    margin: auto 0;
+}
+
+#top-navi-wrapper li {
+    list-style: none;
+}

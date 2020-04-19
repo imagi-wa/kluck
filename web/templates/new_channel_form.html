@@ -1,0 +1,30 @@
+{{ define "content" }}
+
+<div class="container justify-content-center">
+    <h1 class="row justify-content-center">Create a channel</h1>
+    <form action="/channels/new" method="POST" class="p-4">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="type" id="inlineRadio1" value="1" checked>
+            <label class="form-check-label">Public</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="type" id="inlineRadio2" value="2">
+            <label class="form-check-label">Private</label>
+        </div>
+        <div class="form-group row justify-content-center">
+            <label for="name" class="col-12 col-form-label">Name</label>
+            <input type="text" class="col form-control" name="name" required>
+        </div>
+        <div class="form-group row justify-content-center">
+            <label for="topic" class="col-12 col-form-label">Topic</label>
+            <textarea class="col form-control" name="topic" rows="8" required></textarea>
+        </div>
+        <div class="form-group row justify-content-center">
+            <div class="col">
+                <button type="submit" class="btn btn-primary d-block mx-auto">Create</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{{ end }}
